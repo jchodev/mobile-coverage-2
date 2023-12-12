@@ -40,6 +40,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.jerry.assessment.R
+import com.jerry.assessment.common.utils.MoshiParser
 import com.jerry.assessment.data.local.DataStoreManagerImpl
 import com.jerry.assessment.designllib.common.textfield.InputTextFieldValidation
 import com.jerry.assessment.designllib.dialog.NormalMessageDialog
@@ -56,6 +57,8 @@ import com.jerry.assessment.features.loginreg.presentation.mvi.RegisterIntent
 import com.jerry.assessment.features.loginreg.presentation.provider.LocalizedProvider
 import com.jerry.assessment.features.loginreg.presentation.viewmodel.LoginViewModel
 import com.jerry.assessment.features.loginreg.presentation.viewmodel.RegisterViewModel
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -296,7 +299,12 @@ private fun RegisterPagePreview() {
                     DataStoreManagerImpl(LocalContext.current),
                     AuthRepositoryImpl(
                         FirebaseAuth.getInstance(),
-                        Firebase.firestore
+                        Firebase.firestore,
+                        moshiParser = MoshiParser(
+                            Moshi.Builder()
+                                .add(KotlinJsonAdapterFactory())
+                                .build()
+                        )
                     ),
                     provider
                 ),

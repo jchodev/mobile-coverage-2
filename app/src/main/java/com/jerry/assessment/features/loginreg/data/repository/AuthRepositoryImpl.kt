@@ -5,6 +5,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.jerry.assessment.common.utils.MoshiParser
+import com.jerry.assessment.features.loginreg.data.mapper.toFirestoreUserData
 import com.jerry.assessment.features.loginreg.domain.model.FirestoreUserData
 
 import com.jerry.assessment.features.loginreg.domain.repository.AuthRepository
@@ -18,7 +20,8 @@ import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val moshiParser: MoshiParser
 ): AuthRepository {
 
     override suspend fun login(
@@ -35,9 +38,8 @@ class AuthRepositoryImpl @Inject constructor(
                 val docRef = firestore.collection("users")
                     .document(documentId)
                 val docResult = docRef.get().await()
-                val data = docResult.data
-
-                Timber.d("AuthRepositoryImpl::login::success:${data}")
+                val firestoreUserData = docResult.data?.toFirestoreUserData()
+                Timber.d("AuthRepositoryImpl::login::success:${firestoreUserData}")
 
                 Result.success(user.uid)
             } else {
@@ -59,6 +61,8 @@ class AuthRepositoryImpl @Inject constructor(
             val user = result.user
 
             if (user != null) {
+
+                var userProfile: Map<String, Any>? = null
 
                 val firestoreResult = firestore.collection("users")
                     .document(user.uid)

@@ -46,6 +46,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 import com.jerry.assessment.R
+import com.jerry.assessment.common.utils.MoshiParser
 import com.jerry.assessment.data.local.DataStoreManagerImpl
 
 import com.jerry.assessment.designllib.common.textfield.InputTextFieldValidation
@@ -59,7 +60,8 @@ import com.jerry.assessment.features.loginreg.presentation.mvi.LoginIntent
 import com.jerry.assessment.features.loginreg.presentation.provider.LocalizedProvider
 
 import com.jerry.assessment.features.loginreg.presentation.viewmodel.LoginViewModel
-
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 
 @Composable
@@ -262,7 +264,12 @@ private fun LoginPagePreview() {
                     DataStoreManagerImpl(LocalContext.current),
                     AuthRepositoryImpl(
                         FirebaseAuth.getInstance(),
-                        Firebase.firestore
+                        Firebase.firestore,
+                        moshiParser = MoshiParser(
+                            Moshi.Builder()
+                                .add(KotlinJsonAdapterFactory())
+                                .build()
+                        )
                     ),
                     provider
                 )
