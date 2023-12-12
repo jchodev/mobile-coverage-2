@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">mobile-coverage</string>
+
+    <string name="mobile_cover_page_title">Please enter your postcode below to view the predicted mobile availability in your area.</string>
+    <string name="mobile_cover_select_address_title">Please select the address</string>
+
+    <string name="mobile_cover_enter_post_code">Enter Postcode</string>
+    <string name="mobile_cover_check_signal_strength">Check Signal Strength</string>
+
+    <string name="signal_type_data_indoor">Data (Indoor)</string>
+    <string name="signal_type_data_outdoor">Data (Outdoor)</string>
+    <string name="signal_type_invoice_indoor">Invoice (Indoor)</string>
+    <string name="signal_type_invoice_outdoor">Invoice (Outdoor)</string>
+
+    <string name="mobile_provider">Provider</string>
+    <string name="mobile_4g">4G</string>
+    <string name="mobile_no_4g">Non 4G</string>
+
+    <string name="signal_0_desc_content">Clear (no signal predicted)</string>
+    <string name="signal_1_desc_content">Red (reliable signal unlikely)</string>
+    <string name="signal_2_desc_content">Amber (may experience problems with connectivity)</string>
+    <string name="signal_3_desc_content">Green (likely to have good coverage and receive a data rate to support basic web services)</string>
+    <string name="signal_4_desc_content">Enhanced (likely to have good coverage indoors and to receive an enhanced data rate to support multimedia services)</string>
+
+
+    <!-- common -->
+    <string name="retry">Retry</string>
+    <string name="time_out_error">Timeout, please try later</string>
+    <string name="unknown_host_error">Please check your network connection</string>
+    <string name="some_error">Unknown error, please try later </string>
+
+    <!-- error -->
+    <string name = "cannot_blank">Cannot Blank</string>
+    <string name = "invalid_email">Invalid email</string>
+    <string name = "invalid_google_email">Invalid Google email</string>
+    <string name = "password_too_short">password too short</string>
+    <string name = "two_password_not_equal">two password not equal</string>
+    <string name = "login_failed">Invalid Email / Password</string>
+    <string name = "registration_failed">Registration failed</string>
+    <string name = "no_internet_connection">No Internet Connection</string>
+    <string name = "invalid_password">Invalid Password</string>
+    <string name = "user_not_found">User not found</string>
+    <string name = "too_many_requests">Too many attempts please try later</string>
+    <string name = "email_sent">Email Sent</string>
+    <string name = "unknown_error">Unknown Error</string>
+    <string name = "the_email_address_is_already">The email address is already</string>
+</resources>

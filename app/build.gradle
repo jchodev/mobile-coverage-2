@@ -1,0 +1,205 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.dagger.hilt.android'
+    id 'kotlin-android'
+    id 'kotlin-parcelize'
+    id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+}
+
+apply from: "$project.rootDir/jacoco.gradle"
+
+tasks.withType(Test) {
+    useJUnitPlatform()
+}
+
+def properties = new Properties()
+properties.load(new FileInputStream(
+        "$project.rootDir/local.properties"
+))
+
+android {
+    namespace 'com.jerry.assessment'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.jerry.assessment"
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+
+        buildConfigField "String", "BASE_URL", "\"https://api-proxy.ofcom.org.uk/\""
+        buildConfigField "String", "KEY", "\"" + properties.getProperty("myKey", "") + "\""
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+
+        // Temporarily solution to fix:
+        // Dependency 'androidx.emoji2:emoji2-views-helper:1.4.0' requires libraries and applications that
+        // depend on it to compile against version 34 or later of the
+        // Android APIs.
+        configurations.all {
+            resolutionStrategy {
+                force("androidx.emoji2:emoji2-views-helper:1.3.0")
+                force("androidx.emoji2:emoji2:1.3.0")
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+
+            minifyEnabled false
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
+            debuggable false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            firebaseCrashlytics {
+                mappingFileUploadEnabled true
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.5"
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+
+    // Dependency injection
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    implementation 'androidx.tv:tv-material:1.0.0-alpha10'
+    implementation 'androidx.navigation:navigation-runtime-ktx:2.7.5'
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    //constraintlayout
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+
+    // Networking
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_moshi_convertor"
+    implementation "com.squareup.okhttp3:okhttp:$restofit_ok_http3_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$retrofit_logging_interceptor"
+
+    //scope
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+
+
+    implementation  "androidx.appcompat:appcompat:$appcompat_version"
+
+
+    // JUnit 5
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$junit_jupiter_version"
+    testImplementation  "org.junit.jupiter:junit-jupiter-params:$junit_jupiter_version"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testRuntimeOnly"org.junit.vintage:junit-vintage-engine"
+
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "io.mockk:mockk:$mockk_version"
+
+
+    //turbine
+    implementation "org.jetbrains.kotlin:kotlin-test"
+    implementation  "app.cash.turbine:turbine:$turbine_version"
+
+    //timber
+    implementation "com.jakewharton.timber:timber:$timber_verion"
+
+    //jetpack dependencies
+    implementation "androidx.compose:compose-bom:$jetpack_compose_bom"
+    implementation "androidx.compose.material3:material3:$material3_version"
+
+
+    // Jetpack Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview"
+    debugImplementation "androidx.compose.ui:ui-tooling"
+    //debugNotMinifiedImplementation "androidx.compose.ui:ui-tooling"
+    implementation "androidx.compose.runtime:runtime:$compose_version"
+
+    implementation 'androidx.activity:activity-compose:1.8.0'
+
+    //live data using at compose
+    implementation "androidx.compose.runtime:runtime-livedata:$jackpack_runtime_livedata"
+
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    //fix jetpack pager build issues
+    implementation "androidx.compose.foundation:foundation:$fundation_version"
+
+    // LeakCanary //app only
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+
+
+    //firebase
+    implementation(platform("com.google.firebase:firebase-bom:$firebase_version"))
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    // Firebase auth
+    implementation("com.google.firebase:firebase-auth")
+    // Declare the dependency for the Cloud Firestore library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-firestore")
+
+    //room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    //glide compose
+    implementation "com.github.bumptech.glide:compose:$glide_compose_version"
+
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_runtime_compose_version"
+
+    // Navigation Compose
+    implementation "androidx.navigation:navigation-compose:$jetpack_navigation_compose_verion"
+
+    //splashscreen
+    implementation "androidx.core:core-splashscreen:$core_splachscreen_version"
+
+    implementation "com.google.firebase:firebase-firestore:$firestore_version"
+
+    //Moshi Library Dependencies - Core Moshi JSON Library and Moshi's Kotlin support and converter factory
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+
+}
+
+// Allow references to generated code {https://developer.android.com/training/dependency-injection/hilt-android}
+kapt {
+    correctErrorTypes true
+}
