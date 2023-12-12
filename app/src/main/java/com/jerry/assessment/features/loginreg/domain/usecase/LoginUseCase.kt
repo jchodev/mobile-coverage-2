@@ -26,9 +26,11 @@ class LoginUseCase @Inject constructor(
         )
         return if (result.isSuccess) {
             if (result.getOrNull() != null) {
-                UseCaseResult.Success(result.getOrNull())
+                UseCaseResult.Success(result.getOrNull()!!)
             }
-            UseCaseResult.CustomerError(localizedProvider.getLoginFailed())
+            else {
+                UseCaseResult.CustomerError(localizedProvider.getLoginFailed())
+            }
         } else {
             when (val exception = result.exceptionOrNull()) {
                 is FirebaseAuthException -> {
