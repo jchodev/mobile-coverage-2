@@ -28,8 +28,7 @@ const val REGISTER_UI_STATE_KEY = "register_ui_state"
 class RegisterViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val validateBasicInformationUseCase: ValidateBasicInformationUseCase,
-    private val registerUseCase: RegisterUseCase,
-    private val loginDataUseCase: LoginDataUseCase
+    private val registerUseCase: RegisterUseCase
 ): BaseViewModel<RegisterIntent, RegisterAction>() {
 
     val registerUiState = savedStateHandle.getStateFlow(REGISTER_UI_STATE_KEY, RegisterUIState())
@@ -204,10 +203,7 @@ class RegisterViewModel @Inject constructor(
                     savedStateHandle[REGISTER_UI_STATE_KEY] = registerUiState.value.copy(
                         isLoading = false,
                     )
-                    loginDataUseCase.saveUserDocumentId(
-                        result.data
-                    )
-                    _goToMainActivityStateFlow.value = false
+                    _goToMainActivityStateFlow.value = true
                 }
                 is UseCaseResult.CustomerError -> {
                     savedStateHandle[REGISTER_UI_STATE_KEY] = registerUiState.value.copy(

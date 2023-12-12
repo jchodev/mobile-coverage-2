@@ -53,6 +53,7 @@ import com.jerry.assessment.designllib.common.textfield.InputTextFieldValidation
 import com.jerry.assessment.designllib.dialog.NormalMessageDialog
 import com.jerry.assessment.designllib.loading.HmLoading
 import com.jerry.assessment.features.loginreg.data.repository.AuthRepositoryImpl
+import com.jerry.assessment.features.loginreg.data.repository.FirestoreRepositoryImpl
 import com.jerry.assessment.features.loginreg.domain.repository.AuthRepository
 import com.jerry.assessment.features.loginreg.domain.usecase.LoginUseCase
 import com.jerry.assessment.features.loginreg.domain.usecase.ValidateBasicInformationUseCase
@@ -261,17 +262,14 @@ private fun LoginPagePreview() {
                 validateBasicInformationUseCase = ValidateBasicInformationUseCase(provider),
                 savedStateHandle = SavedStateHandle(),
                 loginUseCase = LoginUseCase(
-                    DataStoreManagerImpl(LocalContext.current),
-                    AuthRepositoryImpl(
+                    dataStoreManager = DataStoreManagerImpl(LocalContext.current),
+                    authRepository = AuthRepositoryImpl(
                         FirebaseAuth.getInstance(),
-                        Firebase.firestore,
-                        moshiParser = MoshiParser(
-                            Moshi.Builder()
-                                .add(KotlinJsonAdapterFactory())
-                                .build()
-                        )
                     ),
-                    provider
+                    firestoreRepository = FirestoreRepositoryImpl(
+                        Firebase.firestore
+                    ),
+                    localizedProvider = provider
                 )
             )
         )

@@ -48,6 +48,7 @@ import com.jerry.assessment.designllib.loading.HmLoading
 import com.jerry.assessment.domain.manager.DataStoreManager
 import com.jerry.assessment.domain.usecase.LoginDataUseCase
 import com.jerry.assessment.features.loginreg.data.repository.AuthRepositoryImpl
+import com.jerry.assessment.features.loginreg.data.repository.FirestoreRepositoryImpl
 import com.jerry.assessment.features.loginreg.domain.usecase.LoginUseCase
 import com.jerry.assessment.features.loginreg.domain.usecase.RegisterUseCase
 import com.jerry.assessment.features.loginreg.domain.usecase.ValidateBasicInformationUseCase
@@ -296,22 +297,14 @@ private fun RegisterPagePreview() {
                 validateBasicInformationUseCase = ValidateBasicInformationUseCase(provider),
                 savedStateHandle = SavedStateHandle(),
                 registerUseCase = RegisterUseCase(
-                    DataStoreManagerImpl(LocalContext.current),
-                    AuthRepositoryImpl(
+                    dataStoreManager = DataStoreManagerImpl(LocalContext.current),
+                    authRepository = AuthRepositoryImpl(
                         FirebaseAuth.getInstance(),
-                        Firebase.firestore,
-                        moshiParser = MoshiParser(
-                            Moshi.Builder()
-                                .add(KotlinJsonAdapterFactory())
-                                .build()
-                        )
                     ),
-                    provider
-                ),
-                loginDataUseCase = LoginDataUseCase(
-                    DataStoreManagerImpl(
-                        context = LocalContext.current
-                    )
+                    firestoreRepository = FirestoreRepositoryImpl(
+                        Firebase.firestore
+                    ),
+                    localizedProvider = provider
                 )
             )
         )

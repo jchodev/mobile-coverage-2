@@ -5,10 +5,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.jerry.assessment.common.utils.MoshiParser
 import com.jerry.assessment.features.loginreg.data.repository.AuthRepositoryImpl
+import com.jerry.assessment.features.loginreg.data.repository.FirestoreRepositoryImpl
 import com.jerry.assessment.features.loginreg.domain.repository.AuthRepository
+import com.jerry.assessment.features.loginreg.domain.repository.FirestoreRepository
 import com.jerry.assessment.features.loginreg.presentation.provider.LocalizedProvider
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,14 +31,20 @@ class LoginRegModule {
     @Provides
     @Singleton
     fun provideAuthRepository(
-        auth: FirebaseAuth,
-        firebaseFirestore: FirebaseFirestore,
-        moshiParser: MoshiParser
+        auth: FirebaseAuth
     ): AuthRepository {
         return AuthRepositoryImpl(
-            auth = auth,
-            firestore = firebaseFirestore,
-            moshiParser = moshiParser
+            auth = auth
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideFirestoreRepository(
+        firebaseFirestore: FirebaseFirestore,
+    ): FirestoreRepository {
+        return FirestoreRepositoryImpl(
+            firebaseFirestore = firebaseFirestore
         )
     }
 }

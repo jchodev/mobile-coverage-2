@@ -19,31 +19,22 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
-    private val auth: FirebaseAuth,
-    private val firestore: FirebaseFirestore,
-    private val moshiParser: MoshiParser
+    private val auth: FirebaseAuth
 ): AuthRepository {
 
     override suspend fun login(
         email: String,
         password: String,
         documentId: String,
-    ): Result<String?> {
+    ): Result<FirebaseUser> {
         return try {
             val result = auth.signInWithEmailAndPassword(email, password).await()
             Timber.d("AuthRepositoryImpl::login::result:${result}")
             val user = result.user
-            if (user != null) {
-
-                val docRef = firestore.collection("users")
-                    .document(documentId)
-                val docResult = docRef.get().await()
-                val firestoreUserData = docResult.data?.toFirestoreUserData()
-                Timber.d("AuthRepositoryImpl::login::success:${firestoreUserData}")
-
-                Result.success(user.uid)
+            if (user != null){
+                Result.success(user)
             } else {
-                Result.success(null)
+                Result.failure(NullPointerException())
             }
         } catch (e: Exception){
             Timber.d("AuthRepositoryImpl::login::Exception:${e}")
@@ -54,28 +45,16 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun register(
         email: String,
         password: String
-    ): Result<String?> {
+    ): Result<FirebaseUser> {
         return try {
             val result = auth.createUserWithEmailAndPassword(email, password).await()
             Timber.d("AuthRepositoryImpl::register::result:${result}")
             val user = result.user
 
             if (user != null) {
-
-                var userProfile: Map<String, Any>? = null
-
-                val firestoreResult = firestore.collection("users")
-                    .document(user.uid)
-                    .set(
-                        FirestoreUserData(
-                            email = email
-                        ),
-                        SetOptions.merge()
-                    ).await()
-                Timber.d("AuthRepositoryImpl::register::firestoreResult:${firestoreResult}")
-                Result.success(user.uid)
+                Result.success(user)
             } else {
-                Result.success(null)
+                Result.failure(NullPointerException())
             }
         } catch (e: Exception){
             Timber.d("AuthRepositoryImpl::register::Exception:${e}")

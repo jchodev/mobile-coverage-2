@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.jerry.assessment.base.usecase.UseCaseResult
 import com.jerry.assessment.domain.manager.DataStoreManager
 import com.jerry.assessment.features.loginreg.domain.repository.AuthRepository
+import com.jerry.assessment.features.loginreg.domain.repository.FirestoreRepository
 import com.jerry.assessment.features.loginreg.presentation.provider.LocalizedProvider
 import javax.inject.Inject
 
@@ -14,18 +15,22 @@ import javax.inject.Inject
 class RegisterUseCase @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val authRepository: AuthRepository,
+    private val firestoreRepository: FirestoreRepository,
     private val localizedProvider: LocalizedProvider
 ) {
-    suspend fun invoke(email: String, password: String): UseCaseResult<String> {
+    suspend fun invoke(email: String, password: String): UseCaseResult<Boolean> {
 
         val result = authRepository.register(email = email, password = password)
         return if (result.isSuccess) {
-            val documentId = result.getOrNull()
-            if (documentId != null) {
-                dataStoreManager.saveUserDocumentId(documentId = documentId)
-                UseCaseResult.Success(documentId)
+            //save the document ID
+            dataStoreManager.saveUserDocumentId(result.getOrNull()!!.uid)
+
+            val firestoreResult = firestoreRepository.getUserDataByDocumentId(result.getOrNull()!!.uid)
+
+            if (firestoreResult.isSuccess){
+                UseCaseResult.Success(true)
             } else {
-                UseCaseResult.CustomerError(localizedProvider.getRegistrationFailed())
+                UseCaseResult.CustomerError(firestoreResult.exceptionOrNull()?.message ?:  localizedProvider.getRegistrationFailed())
             }
         } else {
 
@@ -42,7 +47,7 @@ class RegisterUseCase @Inject constructor(
                         UseCaseResult.CustomerError(localizedProvider.getInvalidGoogleEmail())
                     }
                     else {
-                        UseCaseResult.CustomerError(localizedProvider.getLoginFailed())
+                        UseCaseResult.CustomerError(localizedProvider.getRegistrationFailed())
                     }
                 }
                 is FirebaseAuthUserCollisionException -> {
