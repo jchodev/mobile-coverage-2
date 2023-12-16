@@ -160,7 +160,6 @@ class MobileCoverageActivity : ComponentActivity() {
                 }
             }
         }
-
     }
 
     private fun hideKeyboard(){
