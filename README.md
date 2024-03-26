@@ -14,6 +14,13 @@ Get data from https://api.ofcom.org.uk/
 | Domain Layer | Entities, usecase, Repository Interface |
 | Data Layer | datamapping, Repository Impl.  |
 
+### UI Demo
+
+
+https://github.com/jchodev/mobile-coverage-2/assets/100594737/7a04b45e-f9c7-4c80-a72e-bf00efb79e86
+
+
+
 
 ### Unit test
 
@@ -53,9 +60,6 @@ https://github.com/jchodev/mobile-coverage/assets/100594737/96346886-a7d2-4eb8-9
 ./gradlew jacocoReport
 ![jacocoReport](https://github.com/jchodev/mobile-coverage/assets/100594737/66d15a43-8fd1-4467-8973-e1ebc7b44908)
 
-### android modularization
-We can modularization (https://developer.android.com/topic/modularization) in this project like this 
-![module_screen](https://github.com/jchodev/mobile-coverage/assets/100594737/a425b729-49c4-4063-9c9c-e3fd34cb8c25)
 
 
 ## TODO
