@@ -4,6 +4,6 @@ import com.jerry.assessment.features.mobilecoverage.data.remote.dto.MobileAvaila
 import com.squareup.moshi.Json
 
 data class MobileCoverageSuccessResponse (
-    @field:Json(name = "PostCode") val postCode: String?,
-    @field:Json(name = "Availability") val availabilities :  List<MobileAvailabilityDto>?
+    @Json(name = "PostCode") val postCode: String?,
+    @Json(name = "Availability") val availabilities :  List<MobileAvailabilityDto>?
 )

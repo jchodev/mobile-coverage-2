@@ -35,26 +35,11 @@
         </activity>
 
         <activity
-            android:name=".features.loginreg.presentation.LoginRegisterActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Mobilecoverage"></activity>
-
-        <activity
             android:name=".presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Mobilecoverage" />
 
-        <activity
-            android:name=".features.testonly.play_service.ServiceActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Mobilecoverage" />
-
-        <service android:name=".features.testonly.play_service.services.BoundService" />
-        <service android:name=".features.testonly.play_service.services.BackgroundService" />
-        <!--        <service android:name=".features.testonly.play_service.services.ForegroundService" />-->
     </application>
 
 </manifest>
