@@ -58,7 +58,6 @@ https://github.com/jchodev/mobile-coverage/assets/100594737/96346886-a7d2-4eb8-9
 
 ### jacocoReport command
 ./gradlew jacocoReport
-![jacocoReport](https://github.com/jchodev/mobile-coverage/assets/100594737/66d15a43-8fd1-4467-8973-e1ebc7b44908)
 
 
 
