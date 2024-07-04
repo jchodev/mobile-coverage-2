@@ -1,7 +1,10 @@
 # mobile-coverage
 This project  = Clean Architecture + MVI(MVVM+) + Jetpack compose  
 
-Get data from https://api.ofcom.org.uk/
+Data from: https://api.ofcom.org.uk/
+
+### Description
+Retrieve mobile coverage data from the Ofcom API (https://api.ofcom.org.uk/) and display it on the user interface (UI). Enable users to search for coverage information by entering their postcode.
 
 ## In this project, was implementation with
 
