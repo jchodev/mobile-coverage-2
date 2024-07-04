@@ -61,11 +61,13 @@ https://github.com/jchodev/mobile-coverage/assets/100594737/96346886-a7d2-4eb8-9
 
 ### jacocoReport command
 ./gradlew jacocoReport
+![image](https://github.com/jchodev/mobile-coverage-2/assets/100594737/5c02732e-2d64-49ca-b993-c3ce9c5efe7c)
 
 
 
 ## TODO
-1. cover jacoco report with 100%
+1. cover jacoco report with 100% ![image](https://github.com/jchodev/mobile-coverage-2/assets/100594737/c7056163-040f-4a7e-aa01-35b96da614bc)
+
 2. Full flow of UI test
 3. Support landscape
 4. Multi-lang
